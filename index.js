@@ -47,9 +47,17 @@ async function run() {
     });
 
     //bookings
+
+    app.get('/bookings'), async(req, res) =>{
+      console.log(req.query);
+      const result = await bookingCollection.find().toArray();
+      res.send(result);
+    }
     app.post('/bookings', async(req, res) =>{
       const booking = req.body;
       console.log(booking);
+      const result = await bookingCollection.insertOne(booking);
+      res.send(result);
     })
 
     // Send a ping to confirm a successful connection
