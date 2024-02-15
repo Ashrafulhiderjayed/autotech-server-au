@@ -29,12 +29,13 @@ async function run() {
 
     const serviceCollection = client.db('autoTech').collection('services');
     const bookingCollection = client.db('autoTech').collection('bookings');
+    const cartCollection = client.db('autoTech').collection('carts');
 
     app.get('/services', async(req, res) =>{
       const cursor = serviceCollection.find();
       const result = await cursor.toArray();
       res.send(result);
-      console.log(result)
+      // console.log(result)
     })
 
     app.get('/service/:id', async(req, res) =>{
@@ -64,16 +65,27 @@ async function run() {
 
     app.post('/appointments', async(req, res) =>{
       const booking = req.body;
-      console.log(booking);
       const result = await bookingCollection.insertOne(booking);
       res.send(result);
     });
+
+    app.patch("/appointments", async(req, res) =>{
+      const updateAppointments = req.body;
+    })
 
     app.delete('/appointments/:id', async(req, res) =>{
       const id = req.params.id;
       const query = {_id: new ObjectId(id)}
       const result = await bookingCollection.deleteOne(query);
       res.send(result);
+    })
+
+    //Technitian------------------------
+    app.post('/carts', async(req, res) =>{
+      const item = req.body;
+      console.log(item);
+      const result= await cartCollection.insertOne(item);
+      res.send(result)
     })
 
     // Send a ping to confirm a successful connection
@@ -89,7 +101,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => { 
-  res.send('Server is running!');
+  res.send('AutoTech Server is running!');
 })
 
 
